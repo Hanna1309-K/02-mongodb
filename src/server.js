@@ -24,7 +24,7 @@ const startServer = async () => {
     app.use(express.json());
 
     // 3. Роути
-    app.use('/notes', notesRoutes);
+    app.use(notesRoutes);
 
     // 4. 404 middleware (після всіх роутів)
     app.use(notFoundHandler);
