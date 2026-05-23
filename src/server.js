@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-
+import { errors } from 'celebrate';
 import notesRoutes from './routes/notesRoutes.js';
 
 import { connectMongoDB } from './db/connectMongoDB.js';
@@ -25,6 +25,8 @@ const startServer = async () => {
 
     // 3. Роути
     app.use(notesRoutes);
+    // celebrate validation errors
+    app.use(errors());
 
     // 4. 404 middleware (після всіх роутів)
     app.use(notFoundHandler);

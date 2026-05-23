@@ -20,12 +20,14 @@ export const getAllNotesSchema = {
 
 export const noteIdSchema = {
     [Segments.PARAMS]: Joi.object().keys({
-        noteId: Joi.string().custom((value, helpers) => {
-            if (!isValidObjectId(value)) {
-                return helpers.error('any.invalid');
-            }
-            return value;
-        }),
+        noteId: Joi.string()
+            .required()
+            .custom((value, helpers) => {
+                if (!isValidObjectId(value)) {
+                    return helpers.message('Invalid noteId format');
+                }
+                return value;
+            }),
     }),
 };
 
@@ -41,12 +43,14 @@ export const createNoteSchema = {
 
 export const updateNoteSchema = {
     [Segments.PARAMS]: Joi.object().keys({
-        noteId: Joi.string().custom((value, helpers) => {
-            if (!isValidObjectId(value)) {
-                return helpers.error('any.invalid');
-            }
-            return value;
-        }),
+        noteId: Joi.string()
+            .required()
+            .custom((value, helpers) => {
+                if (!isValidObjectId(value)) {
+                    return helpers.message('Invalid noteId format');
+                }
+                return value;
+            }),
     }),
 
     [Segments.BODY]: Joi.object()

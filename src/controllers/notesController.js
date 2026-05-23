@@ -11,34 +11,28 @@ export const getAllNotes = async (req, res) => {
 
     const skip = (page - 1) * perPage;
 
-    const filter = {};
+    let query = Note.find();
 
     // filter by tag
     if (tag) {
-        filter.tag = tag;
+        query = query.where('tag').equals(tag);
     }
 
     // search in title + content
     if (search) {
-        filter.$or = [
-            {
-                title: {
-                    $regex: search,
-                    $options: 'i',
-                },
-            },
-            {
-                content: {
-                    $regex: search,
-                    $options: 'i',
-                },
-            },
-        ];
+        const regex = new RegExp(search, 'i');
+
+        query = query.where({
+            $or: [
+                { title: regex },
+                { content: regex },
+            ],
+        });
     }
 
-    const totalNotes = await Note.countDocuments(filter);
+    const totalNotes = await Note.countDocuments(query.getFilter());
 
-    const notes = await Note.find(filter)
+    const notes = await query
         .skip(skip)
         .limit(perPage);
 
