@@ -17,26 +17,41 @@ dotenv.config();
 const app = express();
 
 const startServer = async () => {
-    await connectMongoDB();
+    try {
+        // connect DB
+        await connectMongoDB();
 
-    app.use(logger);
-    app.use(cors());
-    app.use(express.json());
+        // middleware
+        app.use(logger);
+        app.use(cors({
+            origin: true,
+            credentials: true,
+        }));
+        app.use(express.json());
 
-    app.use('/auth', authRouter);
-    app.use(notesRoutes);
+        // routes
+        app.use('/auth', authRouter);
+        app.use(notesRoutes);
 
-    app.use(errors());
+        // errors from celebrate
+        app.use(errors());
 
-    app.use(notFoundHandler);
+        // 404
+        app.use(notFoundHandler);
 
-    app.use(errorHandler);
+        // global error handler
+        app.use(errorHandler);
 
-    const PORT = process.env.PORT || 3000;
+        const PORT = process.env.PORT || 3000;
 
-    app.listen(PORT, () => {
-        console.log(`Server is running on port ${PORT}`);
-    });
+        app.listen(PORT, () => {
+            console.log(`Server is running on port ${PORT}`);
+        });
+
+    } catch (error) {
+        console.error('❌ Failed to start server:', error);
+        process.exit(1);
+    }
 };
 
 startServer();
