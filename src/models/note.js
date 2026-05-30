@@ -31,7 +31,7 @@ const noteSchema = new mongoose.Schema(
     },
 );
 // ✅ ЯВНИЙ індекс (як вимагає ТЗ)
-noteSchema.index({ tag: 1 });
+noteSchema.index({ tag: 1, userId: 1 });
 
 // ✅ правильна назва моделі
 export const Note = mongoose.model('Note', noteSchema);

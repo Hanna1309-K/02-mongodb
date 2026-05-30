@@ -2,6 +2,7 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import { errors } from 'celebrate';
+import cookieParser from 'cookie-parser';
 
 import notesRoutes from './routes/notesRoutes.js';
 import authRouter from './routes/authRoutes.js';
@@ -19,11 +20,7 @@ const app = express();
 const startServer = async () => {
     try {
         console.log('🚀 SERVER STARTING...');
-        console.log('NODE ENV:', process.env.NODE_ENV);
-        console.log('PORT:', process.env.PORT);
-        console.log('MONGO_URL exists:', !!process.env.MONGO_URL);
 
-        // connect DB
         await connectMongoDB();
 
         console.log('✅ MongoDB connected');
@@ -35,16 +32,23 @@ const startServer = async () => {
             credentials: true,
         }));
         app.use(express.json());
+        app.use(cookieParser());
 
         // routes
         app.use('/auth', authRouter);
         app.use(notesRoutes);
 
-        // errors from celebrate
-        app.use(errors());
+        app.get('/', (req, res) => {
+            res.status(200).json({
+                message: 'API is running',
+            });
+        });
 
         // 404
         app.use(notFoundHandler);
+
+        // celebrate errors
+        app.use(errors());
 
         // global error handler
         app.use(errorHandler);
