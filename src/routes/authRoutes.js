@@ -4,8 +4,8 @@ import { celebrate, Segments } from 'celebrate';
 import {
     registerUser,
     loginUser,
-    refreshUserSession,
     logoutUser,
+    refreshUserSession,
 } from '../controllers/authController.js';
 
 import {
