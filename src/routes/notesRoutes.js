@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import { celebrate } from 'celebrate';
+import { authenticate } from '../middleware/authenticate.js';
 
 import {
     getAllNotes,
@@ -18,6 +19,7 @@ import {
 
 const router = Router();
 
+router.use(authenticate);
 // GET /notes
 router.get(
     '/notes',
