@@ -18,8 +18,15 @@ const app = express();
 
 const startServer = async () => {
     try {
+        console.log('🚀 SERVER STARTING...');
+        console.log('NODE ENV:', process.env.NODE_ENV);
+        console.log('PORT:', process.env.PORT);
+        console.log('MONGO_URL exists:', !!process.env.MONGO_URL);
+
         // connect DB
         await connectMongoDB();
+
+        console.log('✅ MongoDB connected');
 
         // middleware
         app.use(logger);
@@ -45,11 +52,11 @@ const startServer = async () => {
         const PORT = process.env.PORT || 3000;
 
         app.listen(PORT, () => {
-            console.log(`Server is running on port ${PORT}`);
+            console.log(`🔥 Server running on port ${PORT}`);
         });
 
     } catch (error) {
-        console.error('❌ Failed to start server:', error);
+        console.error('❌ STARTUP ERROR:', error);
         process.exit(1);
     }
 };
