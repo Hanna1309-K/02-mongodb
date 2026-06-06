@@ -29,6 +29,7 @@ export const registerUser = async (req, res, next) => {
     const user = await User.create({
       email,
       password: hashedPassword,
+      name: email.split('@')[0],
     });
 
     const session = await createSession(user._id);
@@ -164,7 +165,7 @@ export const requestResetEmail = async (req, res, next) => {
     const template = handlebars.compile(templateSource);
 
     const html = template({
-      name: user.email,
+      name: user.name,
       link: resetLink,
     });
 
