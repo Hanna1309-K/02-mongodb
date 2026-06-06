@@ -6,6 +6,7 @@ import cookieParser from 'cookie-parser';
 
 import notesRoutes from './routes/notesRoutes.js';
 import authRouter from './routes/authRoutes.js';
+import userRouter from './routes/userRoutes.js';
 
 import { connectMongoDB } from './db/connectMongoDB.js';
 
@@ -36,6 +37,7 @@ const startServer = async () => {
 
         // routes
         app.use('/auth', authRouter);
+        app.use('/users', userRouter);
         app.use(notesRoutes);
 
         app.get('/', (req, res) => {
